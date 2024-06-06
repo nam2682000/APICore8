@@ -1,0 +1,41 @@
+# Tệp mã nguồn đã biên dịch
+*.class
+*.o
+*.so
+*.dll
+
+# Nhật ký
+logs/
+*.log
+
+# Thư mục phụ thuộc
+node_modules/
+vendor/
+
+# Tệp do hệ điều hành tạo ra
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Biến môi trường
+.env
+
+# Tệp cụ thể của IDE
+.vscode/
+.idea/
+
+# Thư mục build
+build/
+dist/
+bin/
+obj/
+
+# Tệp sao lưu
+*.bak
+*.tmp
+
+# Tệp cụ thể của ứng dụng
+database.sqlite
