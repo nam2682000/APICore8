@@ -1,4 +1,7 @@
-﻿namespace MyApp.Database.Entity
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+
+namespace MyApp.Database.Entity
 {
     public enum Grade
     {
@@ -7,11 +10,11 @@
 
     public class Enrollment
     {
-        public int EnrollmentID { get; set; }
+        [Key]
+        public int Id { get; set; }
         public int CourseID { get; set; }
         public int StudentID { get; set; }
         public Grade? Grade { get; set; }
-
         public Course Course { get; set; }
         public Student Student { get; set; }
     }

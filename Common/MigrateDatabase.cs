@@ -12,7 +12,6 @@ namespace MyApp.Common
                 // Check if there is any data in the database
                 if (!context.Students.Any())
                 {
-                    context.Database.Migrate();
                 }
             }
             catch (Exception ex)
@@ -20,6 +19,4 @@ namespace MyApp.Common
             }
         }
     }
-
-    
 }

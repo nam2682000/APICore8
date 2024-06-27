@@ -1,8 +1,11 @@
-﻿namespace MyApp.Database.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MyApp.Database.Entity
 {
     public class Student
     {
-        public int ID { get; set; }
+        [Key]
+        public int Id { get; set; }
         public string LastName { get; set; }
         public string FirstMidName { get; set; }
         public DateTime EnrollmentDate { get; set; }
