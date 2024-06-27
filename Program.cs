@@ -3,15 +3,48 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MyApp.Common;
 using MyApp.Database;
 using MyApp.Dependency;
+using System.Reflection;
 using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter JWT with Bearer into field",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
 
 //add db context with conection string
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -28,9 +61,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 Dependency.DependencyInjection(builder.Services);
 
-builder.Services.AddControllers();
 
-var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
+// Configure JWT authentication
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]!);
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -44,18 +78,15 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(key)
+        ValidIssuer = builder.Configuration["Jwt:Issuer"]!,
+        ValidAudience = builder.Configuration["Jwt:Audience"]!,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        RefreshBeforeValidation = true,
     };
 });
 
-builder.Services.AddControllers();
 
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -92,3 +123,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+

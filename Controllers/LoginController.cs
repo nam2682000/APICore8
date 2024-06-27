@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyApp.Model;
 using MyApp.Service;
+using System.Net;
 
 namespace MyApp.Controllers
 {
@@ -18,8 +19,14 @@ namespace MyApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(LoginModel loginModel)
         {
-            string token = await _loginService.Login(loginModel);
-            return Ok(token);
+            try
+            {
+                string token = await _loginService.Login(loginModel);
+                return Ok(token);
+            }
+            catch (Exception ex) {
+                return Unauthorized();
+            }
         }
     }
 }

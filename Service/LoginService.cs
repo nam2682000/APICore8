@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using MyApp.Database;
 using MyApp.Model;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -32,28 +33,31 @@ namespace MyApp.Service
         {
             //var result = await _signInManager.PasswordSignInAsync(model.UserName,model.Password, model.RememberMe, lockoutOnFailure: true);
             var user = await _userManager.FindByNameAsync(model.UserName);
-            return await GenarateToken(user ?? new ApplicationUser());
+            return await GenerateJwtToken(user ?? new ApplicationUser());
         }
 
-        private async Task<string> GenarateToken(ApplicationUser user)
+        private async Task<string> GenerateJwtToken(ApplicationUser user)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]!);
             var roles = await _userManager.GetRolesAsync(user);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Role,string.Join(",", roles))
-                }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-            return tokenString;
+            var securityKey = new SymmetricSecurityKey(key);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, user.UserName!),
+                new Claim(ClaimTypes.Role,string.Join(",", roles))
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"]!,
+                audience: _configuration["Jwt:Audience"]!,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
