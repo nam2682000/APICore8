@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using MyApp.Model;
 using MyApp.Service;
 using System.Net;
@@ -22,7 +23,7 @@ namespace MyApp.Controllers
             try
             {
                 string token = await _loginService.Login(loginModel);
-                return Ok(token);
+                return Ok(new { token = token });
             }
             catch (Exception ex) {
                 return Unauthorized();

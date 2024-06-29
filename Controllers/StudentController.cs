@@ -18,18 +18,18 @@ namespace MyApp.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public async Task<IActionResult> GetAll() {
-            var data = await _context.Students.FirstOrDefaultAsync();
-            return Ok(data);
-        }
+        //[Authorize(Roles = "Admin")]
+        //[HttpGet]
+        //public async Task<IActionResult> GetAll() {
+        //    var data = await _context.Students.FirstOrDefaultAsync();
+        //    return Ok(data);
+        //}
 
         [Authorize(Roles = "User")]
-        [HttpPost]
-        public async Task<IActionResult> GetAll1()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            return Ok("User");
+            return Ok(new {data="User"});
         }
     }
 }
