@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Abstrastions\" />
+    <Folder Include="Features\Class\Command\" />
+    <Folder Include="Features\Class\Common\Exceptions\" />
+    <Folder Include="Features\Class\" />
+    <Folder Include="Interface\Service\" />
+    <Folder Include="Features\Class\Common\Mappings\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Validators\" />
+    <Folder Include="Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+</Project>

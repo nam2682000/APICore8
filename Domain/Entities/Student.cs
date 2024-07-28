@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Database.Entity
 {
-    public class Student
+    public class Student: BaseEntityAuditable<int>
     {
         [Key]
-        public int Id { get; set; }
         public string LastName { get; set; }
         public string FirstMidName { get; set; }
         public DateTime EnrollmentDate { get; set; }

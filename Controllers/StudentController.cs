@@ -7,7 +7,6 @@ namespace MyApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-
     public class StudentController : ControllerBase
     {
         private readonly ILogger<StudentController> _logger;
@@ -20,13 +19,14 @@ namespace MyApp.Controllers
 
         //[Authorize(Roles = "Admin")]
         //[HttpGet]
-        //public async Task<IActionResult> GetAll() {
+        //public async Task<IActionResult> GetAll()
+        //{
         //    var data = await _context.Students.FirstOrDefaultAsync();
         //    return Ok(data);
         //}
 
-        [Authorize(Roles = "User")]
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetAll()
         {
             return Ok(new {data="User"});

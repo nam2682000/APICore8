@@ -16,4 +16,5 @@
         public string[] Roles { get; set; }
 
     }
+
 }

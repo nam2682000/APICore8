@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Domain.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Database.Entity
@@ -7,11 +7,9 @@ namespace MyApp.Database.Entity
     {
         A, B, C, D, F
     }
-
-    public class Enrollment
+    public class Enrollment: BaseEntity<int> 
     {
         [Key]
-        public int Id { get; set; }
         public int CourseID { get; set; }
         public int StudentID { get; set; }
         public Grade? Grade { get; set; }

@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyApp.Model;
 using MyApp.Service;
-using System.Net;
 
 namespace MyApp.Controllers
 {
